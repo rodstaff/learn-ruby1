@@ -1,31 +1,31 @@
 class Temperature
 
-  def initialize(opts = {})
-    @options = opts
-    @c = @options[:c]
-    @f = @options[:f]
+  def initialize(c_or_f = {})
+    @c_or_f = c_or_f
+    @c = @c_or_f[:c]
+    @f = @c_or_f[:f]
   end
 
-  def self.from_celsius(num)
-    self.new(:c => num)
+  def self.from_celsius(deg)
+    self.new(:c => deg)
   end
 
-  def self.from_fahrenheit(num)
-    self.new(:f => num)
+  def self.from_fahrenheit(deg)
+    self.new(:f => deg)
   end
 
   def in_celsius
-    if @options.has_key?(:c)
+    if @c_or_f.has_key?(:c)
       @c
-    elsif @options.has_key?(:f)
+    elsif @c_or_f.has_key?(:f)
       ftoc(@f)   #original had 'ctof'
     end
   end
 
   def in_fahrenheit
-    if @options.has_key?(:f)
+    if @c_or_f.has_key?(:f)
       @f
-    elsif @options.has_key?(:c)
+    elsif @c_or_f.has_key?(:c)
       ctof(@c)   #original had 'ftoc'
     end
   end
@@ -41,17 +41,23 @@ class Temperature
 end
 
 
-# class Celsius < Temperature
-#   def in_celsius
-#     @c
-#   end
-# end
+class Celsius < Temperature
+  def initialize(deg)
+    @c_or_f = {}
+    @c_or_f[:c] = deg
+    @c = @c_or_f[:c]
+  end
 
-# class Fahrenheit < Temperature
-#   def in_fahrenheit
-#     @f
-#   end
-# end
+end
+
+class Fahrenheit < Temperature
+  def initialize(deg)
+    @c_or_f = {}
+    @c_or_f[:f] = deg
+    @f = @c_or_f[:f]
+  end
+
+end
 
 p Temperature.new(:f => 50).in_fahrenheit.to_i
 p Temperature.new(:f => 32).in_celsius.to_i
@@ -67,11 +73,11 @@ p Temperature.from_celsius(50).in_fahrenheit.to_i
 p Temperature.from_fahrenheit(50).in_fahrenheit.to_i
 p Temperature.from_fahrenheit(50).in_celsius.to_i
 
-# p Celsius.new(:c => 50).in_celsius.to_i
-# p Celsius.new(:c => 50).in_fahrenheit.to_i
-# p Celsius.new()
-# p Fahrenheit.new(:f => 50).in_celsius.to_i
-# p Fahrenheit.new(:f => 50).in_fahrenheit.to_i
-# p Fahrenheit.new()
+p Celsius.new(50).in_celsius.to_i
+p Celsius.new(50).in_fahrenheit.to_i
+
+p Fahrenheit.new(50).in_celsius.to_i
+p Fahrenheit.new(50).in_fahrenheit.to_i
+
 
 
