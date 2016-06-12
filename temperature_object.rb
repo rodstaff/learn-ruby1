@@ -6,19 +6,19 @@ class Temperature
     @f = @options[:f]
   end
 
-  def self.from_celsius(deg)
-    self.new(:c => deg)
+  def self.from_celsius(num)
+    self.new(:c => num)
   end
 
-  def self.from_fahrenheit(deg)
-    self.new(:f => deg)
+  def self.from_fahrenheit(num)
+    self.new(:f => num)
   end
 
   def in_celsius
     if @options.has_key?(:c)
       @c
     elsif @options.has_key?(:f)
-      f_to_c(@f)   
+      ftoc(@f)   #original had 'ctof'
     end
   end
 
@@ -26,32 +26,32 @@ class Temperature
     if @options.has_key?(:f)
       @f
     elsif @options.has_key?(:c)
-      c_to_f(@c)  
+      ctof(@c)   #original had 'ftoc'
     end
   end
 
-  def c_to_f(deg)
-    ((deg * 9.0) / 5.0) + 32
+  def ctof(num)
+    (((num * 9) / 5.0) + 32)  #original had '5.000'
   end
 
-  def f_to_c(deg)
-    5.0*(deg - 32)/ 9.0 
+  def ftoc(num)
+    (((num - 32) * 5) / 9.0)  #original had '9.0000'
   end
 
 end
 
 
-class Celsius < Temperature
-  def in_celsius  #overrides method of superclass
-    @c
-  end
-end
+# class Celsius < Temperature
+#   def in_celsius
+#     @c
+#   end
+# end
 
-class Fahrenheit < Temperature
-  def in_fahrenheit #overrides method of superclass
-    @f
-  end
-end
+# class Fahrenheit < Temperature
+#   def in_fahrenheit
+#     @f
+#   end
+# end
 
 p Temperature.new(:f => 50).in_fahrenheit.to_i
 p Temperature.new(:f => 32).in_celsius.to_i
@@ -67,11 +67,11 @@ p Temperature.from_celsius(50).in_fahrenheit.to_i
 p Temperature.from_fahrenheit(50).in_fahrenheit.to_i
 p Temperature.from_fahrenheit(50).in_celsius.to_i
 
-p Celsius.new(:c => 50).in_celsius.to_i
-p Celsius.new(:c => 50).in_fahrenheit.to_i
-p Celsius.new()
-p Fahrenheit.new(:f => 50).in_celsius.to_i
-p Fahrenheit.new(:f => 50).in_fahrenheit.to_i
-p Fahrenheit.new()
+# p Celsius.new(:c => 50).in_celsius.to_i
+# p Celsius.new(:c => 50).in_fahrenheit.to_i
+# p Celsius.new()
+# p Fahrenheit.new(:f => 50).in_celsius.to_i
+# p Fahrenheit.new(:f => 50).in_fahrenheit.to_i
+# p Fahrenheit.new()
 
 
